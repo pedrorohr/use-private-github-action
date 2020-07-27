@@ -1,0 +1,21 @@
+name: 'use-private-github-action'
+
+on: [push]
+
+jobs:
+  checkout-and-run-private-github-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Private GitHub Action Repository
+        uses: actions/checkout@v2
+        with:
+          repository: pedrorohr/pedro-rohr-private-github-action
+          token: ${{ secrets.PERSONAL_TOKEN }} # stored in GitHub secrets
+          path: .github/actions
+      - name: Run Private GitHub Action
+        uses: ./.github/actions
+        id: my-private-action
+        with:
+          who-should-i-greet: Gandalf
+      - name: Log Private GitHub Action Output
+        run: echo ${{steps.my-private-action.outputs.greeting}}
